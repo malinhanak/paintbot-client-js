@@ -1,6 +1,7 @@
 {
   "name": "@cygni/paintbot-client-js",
   "version": "0.0.0",
+  "repository": "github:cygni/paintbot-client-js",
   "author": "Max Davidson <max.davidson@cygni.se>",
   "license": "MIT",
   "main": "lib/index.js",

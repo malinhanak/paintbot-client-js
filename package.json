@@ -1,11 +1,13 @@
 {
-  "name": "paintbot-client-js",
-  "version": "0.1.0",
+  "name": "@cygni/paintbot-client-js",
+  "version": "0.0.0",
+  "repository": "github:cygni/paintbot-client-js",
   "author": "Max Davidson <max.davidson@cygni.se>",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "es/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "build": "run-p build:*",
     "build:lib": "rimraf lib && tsc",

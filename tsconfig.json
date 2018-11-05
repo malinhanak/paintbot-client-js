@@ -2,12 +2,11 @@
   "compilerOptions": {
     /* Basic Options */
     "target": "es5",
-    "module": "commonjs",
-    "declaration": true,
-    "sourceMap": true,
-    "outDir": "./lib",
+    "module": "es2015",
     "rootDir": "./src",
-    "importHelpers": true,
+    "declaration": true,
+    "declarationDir": "./.types",
+    "sourceMap": true,
     "preserveConstEnums": true,
 
     /* Strict Type-Checking Options */

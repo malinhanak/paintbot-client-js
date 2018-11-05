@@ -134,7 +134,7 @@ export function createClient(player: Player, options: ClientOptions = {}) {
             'Game results are in:',
             ...gameResult.map(
               ({ rank, playerName, points, alive }) =>
-                `  ${rank}: ${playerName} (${points} points ${alive ? '☠️' : ''})`,
+                `  ${rank}: ${playerName} (${points} points ${alive ? '' : '☠️'})`,
             ),
           ].join('\n'),
         );

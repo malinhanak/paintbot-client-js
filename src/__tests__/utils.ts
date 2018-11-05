@@ -1,4 +1,4 @@
-import { Coordinate } from './utils';
+import { Coordinate } from '../utils';
 
 describe('Coordinate', () => {
   it('creates a coordinate object from x and y', () => {

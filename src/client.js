@@ -33,12 +33,24 @@ export function createClient({
 
   let heartbeatTimeout;
   let gameMode;
+  let latestGameSettings;
   let latestGameLink;
 
   ws.addEventListener('open', handleOpen);
   ws.addEventListener('close', handleClose);
   ws.addEventListener('error', handleError);
   ws.addEventListener('message', handleMessage);
+
+  function logGameProgress(gameTick) {
+    if (gameTick % 20 !== 0) {
+      return;
+    }
+    const durationInSeconds = latestGameSettings.gameDurationInSeconds;
+    const timeInMsPerTick = latestGameSettings.timeInMsPerTick;
+    const totalTicks = (durationInSeconds * 1000) / timeInMsPerTick;
+    const progress = (gameTick / totalTicks) * 100;
+    logger.info(`Progress ${Math.floor(progress)}%`);
+  }
 
   function sendMessage(message) {
     ws.send(JSON.stringify(message));
@@ -62,14 +74,15 @@ export function createClient({
       heartbeatTimeout = setTimeout(sendMessage, HEARTBEAT_INTERVAL, createHeartbeatRequestMessage(receivingPlayerId));
     },
 
-    [MessageType.PlayerRegistered]({ receivingPlayerId, gameMode: _gameMode }) {
+    [MessageType.PlayerRegistered]({ receivingPlayerId, gameMode: _gameMode, gameSettings }) {
       gameMode = _gameMode;
+      latestGameSettings = gameSettings;
       if (!SUPPORTED_GAME_MODES.has(gameMode)) {
         logger.error(`Unsupported game mode: ${gameMode}`);
         close();
       } else {
         logger.info(`Player ${bot.BOT_NAME} was successfully registered!`);
-        logger.info(`Game mode: ${gameMode}`);
+        logger.info(`Game mode: ${gameMode}\n${JSON.stringify(gameSettings, undefined, 2)}`);
         sendMessage(createHeartbeatRequestMessage(receivingPlayerId));
       }
     },
@@ -80,7 +93,7 @@ export function createClient({
     },
 
     [MessageType.GameLink]({ url }) {
-      logger.info(`Game is starting`);
+      logger.info(`Game is ready`);
       latestGameLink = url;
       if (autoStart && gameMode === GameMode.Training) {
         sendMessage(createStartGameMessage());
@@ -92,7 +105,7 @@ export function createClient({
     },
 
     [MessageType.GameStarting]() {
-      logger.info(`Game is starting`);
+      logger.info(`Game is starting...`);
     },
 
     [MessageType.GameResult]() {
@@ -114,9 +127,9 @@ export function createClient({
 
     async [MessageType.MapUpdate](mapUpdateEvent) {
       const { receivingPlayerId, gameId, gameTick } = mapUpdateEvent;
-      const direction = await bot.getNextMove(mapUpdateEvent);
-      logger.info(`Sending ${direction} at ${gameTick}`);
-      sendMessage(createRegisterMoveMessage(direction, receivingPlayerId, gameId, gameTick));
+      const action = await bot.getNextAction(mapUpdateEvent);
+      sendMessage(createRegisterMoveMessage(action, receivingPlayerId, gameId, gameTick));
+      logGameProgress(gameTick);
     },
   };
 

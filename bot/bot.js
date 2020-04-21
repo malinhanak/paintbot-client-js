@@ -10,7 +10,7 @@ export const BOT_NAME = 'Scripting Doodler';
  * @param {import('../src/index.js').MapUpdateEvent} mapUpdateEvent
  * @returns {Direction | Promise<Direction>}
  */
-export function getNextMove(mapUpdateEvent) {
+export function getNextAction(mapUpdateEvent) {
   const mapUtils = new MapUtility(mapUpdateEvent.map, mapUpdateEvent.receivingPlayerId);
   const validActions = [Action.Down, Action.Up, Action.Left, Action.Right].filter(action =>
     mapUtils.canIMoveInDirection(action),

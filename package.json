@@ -1,41 +1,40 @@
 {
-  "name": "@cygni/paintbot-client-js",
-  "version": "0.0.0",
-  "repository": "github:cygni/paintbot-client-js",
-  "author": "Max Davidson <max.davidson@cygni.se>",
+  "name": "paintbot-client-js",
+  "version": "2.0.0",
+  "description": "Cygni Paintbot client in modern JavaScript",
+  "author": "Johan Horvius <horv@cygni.se>",
   "license": "MIT",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "types": "es/index.d.ts",
-  "sideEffects": false,
-  "scripts": {
-    "build": "run-p build:*",
-    "build:lib": "rimraf lib && tsc",
-    "build:es": "rimraf es && tsc --module es2015 --outDir es",
-    "lint": "tslint --project tsconfig.json --format stylish --exclude '**/*.json'",
-    "format": "prettier --write '**/*.{md,yml,js,json,ts,tsx}'",
-    "test": "jest",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cygni/paintbot-client-js.git"
   },
-  "files": [
-    "es",
-    "lib"
-  ],
+  "private": true,
+  "engines": {
+    "node": ">=12.11.0"
+  },
+  "type": "module",
+  "main": "index.js",
+  "browser": "src/index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write **/*.{js,json,md}",
+    "test": "mocha --experimental-modules",
+    "start": "node --experimental-modules --unhandled-rejections=strict paintbot-cli.js"
+  },
   "dependencies": {
-    "tslib": "^1.9.3"
+    "commander": "^4.1.1",
+    "ws": "^7.2.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.9",
-    "jest": "^23.6.0",
-    "jest-junit": "^5.2.0",
-    "npm-run-all": "^4.1.3",
-    "prettier": "^1.14.3",
-    "rimraf": "^2.6.2",
-    "ts-jest": "^23.10.4",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
-    "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.1.6"
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^12.12.6",
+    "@types/ws": "^7.2.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "~6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "mocha": "^7.1.0",
+    "prettier": "~1.19.1"
   }
 }

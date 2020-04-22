@@ -8,7 +8,7 @@ export const BOT_NAME = 'Scripting Doodler';
 
 /**
  * @param {import('../src/index.js').MapUpdateEvent} mapUpdateEvent
- * @returns {Direction | Promise<Direction>}
+ * @returns {Action | Promise<Action>}
  */
 export function getNextAction(mapUpdateEvent) {
   const mapUtils = new MapUtility(mapUpdateEvent.map, mapUpdateEvent.receivingPlayerId);
@@ -33,7 +33,7 @@ export function onMessage(message) {
 }
 
 // desired game settings
-// can be changed to null to get default settings
+// can be changed to null to get default settings from server
 export let settings = {
   maxNoofPlayers: 5,
   timeInMsPerTick: 250,

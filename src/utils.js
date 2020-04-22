@@ -135,21 +135,18 @@ export class MapUtility {
     this.mapSize = map.height * map.width;
     this.playerId = playerId;
     this.characterInfoMap = new Map();
-    this.powerUps = new Array(this.mapSize);
-    this.obstacles = new Array(this.mapSize);
-    this.characters = new Array(this.mapSize);
-
+    this.positionToTiles = new Map();
     for (const p of this.map.powerUpPositions) {
-      this.powerUps[p] = true;
+      this.positionToTiles.set(p, powerUpTile);
     }
 
     for (const p of map.obstaclePositions) {
-      this.obstacles[p] = true;
+      this.positionToTiles.set(p, obstactleTile);
     }
 
     for (const ci of map.characterInfos) {
-      this.characterInfoMap[ci.id] = ci;
-      this.characters[ci.position] = true;
+      this.characterInfoMap.set(ci.id, ci)
+      this.positionToTiles.set(ci.position, createCharacterTile(ci))
     }
   }
 
@@ -200,14 +197,14 @@ export class MapUtility {
    * @returns {Coordinate} player's coordinate
    */
   getMyCoordinate() {
-    return this.convertPositionToCoordinate(this.characterInfoMap[this.playerId].position);
+    return this.convertPositionToCoordinate(this.characterInfoMap.get(this.playerId).position);
   }
 
   /**
    * @returns {CharacterInfo} player's CharacterInfo
    */
   getMyCharacterInfo() {
-    return this.characterInfoMap[this.playerId];
+    return this.characterInfoMap.get(this.playerId);
   }
 
   /**
@@ -216,7 +213,7 @@ export class MapUtility {
    * @returns {CharacterInfo?} the character info or undefined
    */
   getCharacterInfoOf(playerId) {
-    return this.characterInfoMap[playerId];
+    return this.characterInfoMap.get(playerId);
   }
 
   /**
@@ -225,7 +222,7 @@ export class MapUtility {
    * @returns {Coordinate[]}
    */
   getPlayerColouredCoordinates(playerId) {
-    return this.convertPositionsToCoordinates(this.characterInfoMap[playerId].colouredPositions);
+    return this.convertPositionsToCoordinates(this.characterInfoMap.get(playerId).colouredPositions);
   }
 
   /**
@@ -295,7 +292,14 @@ export class MapUtility {
   isTilePositionAvailableForMovementTo(position) {
     if (this.isPositionOutOfBounds(position)) return false;
 
-    return !(this.obstacles[position] || this.characters[position]);
+    const tile = this.positionToTiles.get(position);
+    if (!tile) {
+      return true;
+    }
+
+    const tileType = tile.type;
+
+    return !(tileType === TileType.Character || tileType === TileType.Obstacle);
   }
 
   /**
@@ -307,16 +311,10 @@ export class MapUtility {
       throw new RangeError(`Position [${position}] is out of bounds`);
     }
 
-    if (this.powerUps[position]) {
-      return powerUpTile;
-    }
+    const tile = this.positionToTiles.get(position);
 
-    if (this.obstacles[position]) {
-      return obstactleTile;
-    }
-
-    if (this.characters[position]) {
-      return this.getCharacter(position);
+    if (tile) {
+      return tile;
     }
 
     return emptyTile;
@@ -324,15 +322,14 @@ export class MapUtility {
 
   getCharacter(position) {
     const playerId = this.getPlayerIdAtPosition(position);
-    const characterInfo = this.characterInfoMap[playerId];
+    const characterInfo = this.characterInfoMap.get(playerId);
     return createCharacterTile(characterInfo);
   }
 
   getPlayerIdAtPosition(position) {
-    for (const characterInfo of this.map.characterInfos) {
-      if (characterInfo.position == position) {
-        return characterInfo.id;
-      }
+    const tile = this.getTileAt(position);
+    if (tile.type === TileType.Character) {
+      return tile.character.id;
     }
     throw new Error(`No paintbot at position: ${position}`);
   }

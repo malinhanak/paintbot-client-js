@@ -48,7 +48,7 @@ export let settings = {
   noOfTicksStunned: 10,
   startObstacles: 40,
   startPowerUps: 41,
-  gameDurationInSeconds: 15,
+  gameDurationInSeconds: 60,
   explosionRange: 4,
   pointsPerTick: false,
 };

@@ -21,7 +21,7 @@ const powerUpTile = Object.freeze({ type: TileType.PowerUp });
 const obstactleTile = Object.freeze({ type: TileType.Obstacle });
 
 /** @param {CharacterInfo} character */
-const createCharacterTile = character => Object.freeze({ type: TileType.Character, character });
+const createCharacterTile = (character) => Object.freeze({ type: TileType.Character, character });
 
 /** @enum {string} */
 export const Action = Object.freeze({
@@ -145,8 +145,8 @@ export class MapUtility {
     }
 
     for (const ci of map.characterInfos) {
-      this.characterInfoMap.set(ci.id, ci)
-      this.positionToTiles.set(ci.position, createCharacterTile(ci))
+      this.characterInfoMap.set(ci.id, ci);
+      this.positionToTiles.set(ci.position, createCharacterTile(ci));
     }
   }
 

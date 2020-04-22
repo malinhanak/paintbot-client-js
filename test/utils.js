@@ -55,5 +55,4 @@ describe('Coordinate', () => {
 
     assert.equal(coordinateA.manhattanDistanceTo(coordinateB), 7);
   });
-
 });

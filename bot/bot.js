@@ -12,7 +12,7 @@ export const BOT_NAME = 'Scripting Doodler';
  */
 export function getNextAction(mapUpdateEvent) {
   const mapUtils = new MapUtility(mapUpdateEvent.map, mapUpdateEvent.receivingPlayerId);
-  const validActions = [Action.Down, Action.Up, Action.Left, Action.Right].filter(action =>
+  const validActions = [Action.Down, Action.Up, Action.Left, Action.Right].filter((action) =>
     mapUtils.canIMoveInDirection(action),
   );
 

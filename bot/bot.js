@@ -1,10 +1,17 @@
 import { Action, MessageType, MapUtility } from '../src/index.js';
 
+export const BOT_NAME = 'Scripting Doodler';
+
+/**
+ * @template T
+ * @param {readonly T[]} items
+ * @returns {T}
+ */
 function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-export const BOT_NAME = 'Scripting Doodler';
+const directionActions = [Action.Down, Action.Up, Action.Left, Action.Right];
 
 /**
  * @param {import('../src/index.js').MapUpdateEvent} mapUpdateEvent
@@ -12,11 +19,12 @@ export const BOT_NAME = 'Scripting Doodler';
  */
 export function getNextAction(mapUpdateEvent) {
   const mapUtils = new MapUtility(mapUpdateEvent.map, mapUpdateEvent.receivingPlayerId);
-  const validActions = [Action.Down, Action.Up, Action.Left, Action.Right].filter((action) =>
-    mapUtils.canIMoveInDirection(action),
-  );
+  const myCharacter = mapUtils.getMyCharacter();
+  const myCoordinate = mapUtils.getCoordinateAtPosition(myCharacter.position);
 
-  if (mapUtils.getMyCharacterInfo().carryingPowerUp) {
+  const validActions = directionActions.filter((action) => mapUtils.isActionAtCoordinateAllowed(myCoordinate, action));
+
+  if (myCharacter.carryingPowerUp) {
     validActions.push(Action.Explode);
   }
 
@@ -31,24 +39,3 @@ export function onMessage(message) {
       break;
   }
 }
-
-// desired game settings
-// can be changed to null to get default settings from server
-export let settings = {
-  maxNoofPlayers: 5,
-  timeInMsPerTick: 250,
-  obstaclesEnabled: true,
-  powerUpsEnabled: true,
-  addPowerUpLikelihood: 38,
-  removePowerUpLikelihood: 5,
-  trainingGame: true,
-  pointsPerTileOwned: 1,
-  pointsPerCausedStun: 5,
-  noOfTicksInvulnerableAfterStun: 3,
-  noOfTicksStunned: 10,
-  startObstacles: 40,
-  startPowerUps: 41,
-  gameDurationInSeconds: 60,
-  explosionRange: 4,
-  pointsPerTick: false,
-};

@@ -26,10 +26,10 @@ export function createClient({
     throw new Error('You must specify a bot to use!');
   }
 
-  const href = new URL(venue, host).href;
+  const { href } = new URL(venue, host);
   const ws = new WebSocketImpl(href);
 
-  logger.info(`WebSocket is connecting to ${href}}`);
+  logger.info(`WebSocket is connecting to ${href}`);
 
   let heartbeatTimeout;
   let gameMode;
@@ -42,14 +42,13 @@ export function createClient({
   ws.addEventListener('message', handleMessage);
 
   function logGameProgress(gameTick) {
-    if (gameTick % 20 !== 0) {
-      return;
+    if (gameTick % 20 === 0) {
+      const durationInSeconds = latestGameSettings.gameDurationInSeconds;
+      const timeInMsPerTick = latestGameSettings.timeInMsPerTick;
+      const totalTicks = (durationInSeconds * 1000) / timeInMsPerTick;
+      const progress = (gameTick / totalTicks) * 100;
+      logger.info(`Progress ${Math.floor(progress)}%`);
     }
-    const durationInSeconds = latestGameSettings.gameDurationInSeconds;
-    const timeInMsPerTick = latestGameSettings.timeInMsPerTick;
-    const totalTicks = (durationInSeconds * 1000) / timeInMsPerTick;
-    const progress = (gameTick / totalTicks) * 100;
-    logger.info(`Progress ${Math.floor(progress)}%`);
   }
 
   function sendMessage(message) {

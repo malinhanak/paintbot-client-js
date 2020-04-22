@@ -9,14 +9,11 @@
     "browser": false
   },
   "rules": {
+    "curly": "error",
+    "prefer-const": "error",
+    "class-methods-use-this": "error",
     "prettier/prettier": "error",
-    "import/extensions": [
-      "error",
-      "always",
-      {
-        "ignorePackages": true
-      }
-    ],
+    "import/extensions": ["error", "always", { "ignorePackages": true }],
     "import/no-commonjs": "error"
   }
 }

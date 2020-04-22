@@ -31,3 +31,24 @@ export function onMessage(message) {
       break;
   }
 }
+
+// desired game settings
+// can be changed to null to get default settings
+export let settings = {
+  maxNoofPlayers: 5,
+  timeInMsPerTick: 250,
+  obstaclesEnabled: true,
+  powerUpsEnabled: true,
+  addPowerUpLikelihood: 38,
+  removePowerUpLikelihood: 5,
+  trainingGame: true,
+  pointsPerTileOwned: 1,
+  pointsPerCausedStun: 5,
+  noOfTicksInvulnerableAfterStun: 3,
+  noOfTicksStunned: 10,
+  startObstacles: 40,
+  startPowerUps: 41,
+  gameDurationInSeconds: 15,
+  explosionRange: 4,
+  pointsPerTick: false,
+};

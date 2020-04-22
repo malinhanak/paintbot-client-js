@@ -17,6 +17,7 @@ async function run(botPath = defaultBotPath, { host, venue, autostart }) {
     venue,
     bot,
     autoStart: autostart,
+    gameSettings: bot.settings,
     onGameReady(startGame) {
       const rl = readline.createInterface({
         input: process.stdin,

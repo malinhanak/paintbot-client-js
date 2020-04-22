@@ -17,14 +17,13 @@ async function run(botPath = defaultBotPath, { host, venue, autostart }) {
     venue,
     bot,
     autoStart: autostart,
-    gameSettings: bot.settings,
     onGameReady(startGame) {
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
       });
 
-      rl.question('Start game? (y/n) ', answer => {
+      rl.question('Start game? (y/n) ', (answer) => {
         rl.close();
         if (answer === '' || answer.startsWith('y')) {
           startGame();

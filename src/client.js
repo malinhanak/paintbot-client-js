@@ -20,7 +20,7 @@ export function createClient({
   WebSocket: WebSocketImpl = WebSocket,
   onGameReady,
   clientInfo,
-  gameSettings,
+  gameSettings = bot.GAME_SETTINGS,
 }) {
   if (bot == null) {
     throw new Error('You must specify a bot to use!');

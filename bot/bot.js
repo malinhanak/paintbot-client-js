@@ -39,6 +39,7 @@ export function onMessage(message) {
   }
 }
 
+// Set to null to user server default settings
 export const GAME_SETTINGS = {
   maxNoofPlayers: 5,
   timeInMsPerTick: 250,

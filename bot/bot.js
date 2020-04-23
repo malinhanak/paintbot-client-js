@@ -19,10 +19,9 @@ const directionActions = [Action.Down, Action.Up, Action.Left, Action.Right];
  */
 export function getNextAction(mapUpdateEvent) {
   const mapUtils = new MapUtility(mapUpdateEvent.map, mapUpdateEvent.receivingPlayerId);
-  const myCharacter = mapUtils.getMyCharacter();
-  const myCoordinate = mapUtils.getCoordinateAtPosition(myCharacter.position);
+  const myCharacter = mapUtils.getMyCharacterInfo();
 
-  const validActions = directionActions.filter((action) => mapUtils.isActionAtCoordinateAllowed(myCoordinate, action));
+  const validActions = directionActions.filter((action) => mapUtils.canIMoveInDirection(action));
 
   if (myCharacter.carryingPowerUp) {
     validActions.push(Action.Explode);
@@ -39,3 +38,22 @@ export function onMessage(message) {
       break;
   }
 }
+
+export const GAME_SETTINGS = {
+  maxNoofPlayers: 5,
+  timeInMsPerTick: 250,
+  obstaclesEnabled: true,
+  powerUpsEnabled: true,
+  addPowerUpLikelihood: 38,
+  removePowerUpLikelihood: 5,
+  trainingGame: true,
+  pointsPerTileOwned: 1,
+  pointsPerCausedStun: 5,
+  noOfTicksInvulnerableAfterStun: 3,
+  noOfTicksStunned: 10,
+  startObstacles: 40,
+  startPowerUps: 41,
+  gameDurationInSeconds: 60,
+  explosionRange: 4,
+  pointsPerTick: false,
+};

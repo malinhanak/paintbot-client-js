@@ -28,9 +28,9 @@ describe('Coordinate', () => {
     const coordinate = new Coordinate(x, -y);
 
     // @ts-ignore
-    assert.throws(() => coordinate.translatedByDelta(undefined));
+    assert.throws(() => coordinate.translateByDelta(undefined));
 
-    const translatedCoordinate = coordinate.translatedByDelta({ x, y });
+    const translatedCoordinate = coordinate.translateByDelta({ x, y });
 
     assert.notEqual(translatedCoordinate, coordinate);
     assert.equal(translatedCoordinate.x, 2 * x);
@@ -43,10 +43,10 @@ describe('Coordinate', () => {
     // @ts-ignore
     assert.throws(() => coordinate.translateByAction(undefined));
 
-    assert.deepEqual(coordinate.translatedByAction(Action.Up), new Coordinate(0, -1));
-    assert.deepEqual(coordinate.translatedByAction(Action.Down), new Coordinate(0, 1));
-    assert.deepEqual(coordinate.translatedByAction(Action.Left), new Coordinate(-1, 0));
-    assert.deepEqual(coordinate.translatedByAction(Action.Right), new Coordinate(1, 0));
+    assert.deepEqual(coordinate.translateByAction(Action.Up), new Coordinate(0, -1));
+    assert.deepEqual(coordinate.translateByAction(Action.Down), new Coordinate(0, 1));
+    assert.deepEqual(coordinate.translateByAction(Action.Left), new Coordinate(-1, 0));
+    assert.deepEqual(coordinate.translateByAction(Action.Right), new Coordinate(1, 0));
   });
 
   it('computes the manhattan distance', () => {

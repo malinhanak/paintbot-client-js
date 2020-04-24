@@ -12,7 +12,7 @@
     "curly": "error",
     "prefer-const": "error",
     "class-methods-use-this": "error",
-    "prettier/prettier": "error",
+    "prettier/prettier": "off",
     "import/extensions": ["error", "always", { "ignorePackages": true }],
     "import/no-commonjs": "error"
   }

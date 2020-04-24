@@ -162,7 +162,7 @@ export class MapUtility {
    * @param {number[]} positions
    */
   convertPositionsToCoordinates(positions) {
-    return positions.map(this.convertPositionToCoordinate);
+    return positions.map((p) => this.convertPositionToCoordinate(p));
   }
 
   /**
@@ -185,7 +185,7 @@ export class MapUtility {
    * @returns {number[]} position list of converted positions
    */
   convertCoordinatesToPositions(coordinates) {
-    return coordinates.map(this.convertCoordinateToPosition);
+    return coordinates.map((c) => this.convertCoordinateToPosition(c));
   }
 
   /**

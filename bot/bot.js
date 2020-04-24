@@ -11,9 +11,60 @@ function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-function findPowerUp(powerUpPostion, ourPosition, validSteps) {
-  if (powerUpPostion.x > ourPosition.x && validSteps.includes('LEFT')) {
+const getFoodOnXAxisWithRightMove = (validStep) => {
+  if (validStep.includes('RIGHT')) {
+    return 'RIGHT';
+  } else if (validStep.includes('UP')) {
+    return 'UP';
+  } else if (validStep.includes('DOWN')) {
+    return 'DOWN';
+  }
+};
+
+const getFoodOnXAxisWithLeftMove = (validStep) => {
+  if (validStep.includes('LEFT')) {
     return 'LEFT';
+  } else if (validStep.includes('UP')) {
+    return 'UP';
+  } else if (validStep.includes('DOWN')) {
+    return 'DOWN';
+  }
+};
+
+const getFoodOnYAxisWithUpMove = (validStep) => {
+  if (validStep.includes('UP')) {
+    return 'UP';
+  } else if (validStep.includes('RIGHT')) {
+    return 'RIGHT';
+  } else if (validStep.includes('LEFT')) {
+    return 'LEFT';
+  }
+};
+
+const getFoodOnYAxisWithDownMove = (validStep) => {
+  if (validStep.includes('DOWN')) {
+    return 'DOWN';
+  } else if (validStep.includes('RIGHT')) {
+    return 'RIGHT';
+  } else if (validStep.includes('LEFT')) {
+    return 'LEFT';
+  }
+};
+
+function findPowerUp(powerUpPostion, ourPosition, validSteps, myCharacter) {
+  if (myCharacter.carryingPowerUp) {
+    return 'EXPLODE';
+  }
+  console.log('ourPosition', ourPosition);
+  console.log('powerUpPostion', powerUpPostion);
+  if (ourPosition.x > powerUpPostion.x) {
+    return getFoodOnXAxisWithRightMove(validSteps);
+  } else if (ourPosition.x > powerUpPostion.x) {
+    return getFoodOnXAxisWithLeftMove(validSteps);
+  } else if (ourPosition.x === powerUpPostion.x && ourPosition.y > powerUpPostion.y) {
+    return getFoodOnYAxisWithUpMove(validSteps);
+  } else if (ourPosition.x === powerUpPostion.x && ourPosition.y < powerUpPostion.y) {
+    return getFoodOnYAxisWithDownMove(validSteps);
   }
   return randomItem(validSteps);
 }
@@ -46,7 +97,7 @@ export function getNextAction(mapUpdateEvent) {
     validActions.push(Action.Explode);
   }
 
-  return findPowerUp(closest, myCoordinate, validActions);
+  return findPowerUp(closest, myCoordinate, validActions, myCharacter);
 }
 
 // This handler is optional
